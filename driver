@@ -1,0 +1,94 @@
+import java.io.*;
+import java.util.*;
+
+public class GraphTraversal {
+    private int vertices;
+    private int[][] adjacencyMatrix;
+    private boolean[] visited;
+
+    public GraphTraversal(String filename) throws IOException {
+        loadGraph(filename);
+    }
+
+    private void loadGraph(String filename) throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            vertices = Integer.parseInt(br.readLine().trim());
+            adjacencyMatrix = new int[vertices][vertices];
+            for (int i = 0; i < vertices; i++) {
+                String[] line = br.readLine().trim().split(" ");
+                for (int j = 0; j < vertices; j++) {
+                    adjacencyMatrix[i][j] = Integer.parseInt(line[j]);
+                }
+            }
+        }
+    }
+
+    public void dfsTraversal() {
+        visited = new boolean[vertices];
+        System.out.print("DFS: ");
+        for (int i = 0; i < vertices; i++) {
+            if (!visited[i]) {
+                dfs(i);
+            }
+        }
+        System.out.println();
+    }
+
+    private void dfs(int node) {
+        Stack<Integer> stack = new Stack<>();
+        stack.push(node);
+        while (!stack.isEmpty()) {
+            int v = stack.pop();
+            if (!visited[v]) {
+                visited[v] = true;
+                System.out.print(v + " ");
+                for (int i = vertices - 1; i >= 0; i--) {
+                    if (adjacencyMatrix[v][i] == 1 && !visited[i]) {
+                        stack.push(i);
+                    }
+                }
+            }
+        }
+    }
+
+    public void bfsTraversal() {
+        visited = new boolean[vertices];
+        System.out.print("BFS: ");
+        for (int i = 0; i < vertices; i++) {
+            if (!visited[i]) {
+                bfs(i);
+            }
+        }
+        System.out.println();
+    }
+
+    private void bfs(int node) {
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(node);
+        visited[node] = true;
+        while (!queue.isEmpty()) {
+            int v = queue.poll();
+            System.out.print(v + " ");
+            for (int i = 0; i < vertices; i++) {
+                if (adjacencyMatrix[v][i] == 1 && !visited[i]) {
+                    queue.add(i);
+                    visited[i] = true;
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter file name: ");
+        String filename = scanner.nextLine();
+        scanner.close();
+        try {
+            GraphTraversal graph = new GraphTraversal(filename);
+            graph.dfsTraversal();
+            graph.bfsTraversal();
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+    }
+}

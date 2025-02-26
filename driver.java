@@ -2,16 +2,20 @@ import java.io.*;
 import java.util.*;
 
 public class driver {
-    private int vertices; // Number of vertices in the graph
+    //variable for vertices for graph
+    private int vertices;
 
 
-    private int[][] adjacencyMatrix; // Adjacency matrix representation
+    //create matrix 
+    private int[][] adjacencyMatrix;
 
 
-    private boolean[] visited; // Array to track visited nodes
+
+    //tracking nodes
+    private boolean[] visited;
 
 
-    // Constructor to initialize the graph from a file
+    //the graph from a file
     public driver(String filename) 
     
     throws IOException {
